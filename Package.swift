@@ -42,6 +42,8 @@ let package = Package(
 
         // 🔌 Non-blocking, event-driven WebSocket client and server built on Swift NIO.
         .package(url: "https://github.com/vapor/websocket.git", from: "1.0.0"),
+        
+        .package(url: "https://github.com/apple/swift-nio-transport-services.git", from: "0.0.0"),
     ],
     targets: [
         // Boilerplate
@@ -61,6 +63,7 @@ let package = Package(
             "HTTP",
             "Logging",
             "Multipart",
+            "NIOTransportServices",
             "Routing",
             "Service",
             "TemplateKit",

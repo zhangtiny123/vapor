@@ -1,3 +1,5 @@
+import NIOTransportServices
+
 /// Vapor's default `Server` implementation. Built on SwiftNIO-based `HTTPServer`.
 public final class NIOServer: Server, ServiceType {
     /// See `ServiceType`.
@@ -48,7 +50,10 @@ public final class NIOServer: Server, ServiceType {
             let responderCache = ThreadSpecificVariable<ThreadResponder>()
 
             // create this server's own event loop group
-            let group = MultiThreadedEventLoopGroup(numberOfThreads: config.workerCount)
+            let group = NIOTSEventLoopGroup(
+                loopCount: config.workerCount,
+                defaultQoS: .userInteractive
+            )
             for _ in 0..<config.workerCount {
                 // initialize each event loop
                 let eventLoop = group.next()
