@@ -53,6 +53,7 @@ public final class NIOWebSocketServer: WebSocketServer, Service {
         // FIXME: move to using uri bytes when possible
         let path: [Substring] = request.http.url.path.split(separator: "/")
         guard let route = router.route(path: path, parameters: &request._parameters) else {
+            ERROR("Missing WS route.")
             return nil
         }
         return route.shouldUpgrade(request)
@@ -94,7 +95,7 @@ extension NIOWebSocketServer {
     @discardableResult
     public func get(at path: [PathComponent], use closure: @escaping (WebSocket, Request) throws -> ()) -> Route<WebSocketResponder> {
         let responder = WebSocketResponder(
-            shouldUpgrade: { _ in [:] },
+            shouldUpgrade: { _ in HTTPHeaders() },
             onUpgrade: closure
         )
         let route: Route<WebSocketResponder> = .init(path: path, output: responder)

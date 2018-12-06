@@ -73,6 +73,7 @@ public final class NIOServer: Server, ServiceType {
                         ERROR("[WebSocket Upgrader] Missing container (shouldUpgrade).")
                         return nil
                     }
+                    print("wss.shouldUpgrade(\(req))")
                     return wss.webSocketShouldUpgrade(for: Request(http: req, using: subContainer))
                 }, onUpgrade: { ws, req in
                     guard let subContainer = containerCache.currentValue?.container else {
