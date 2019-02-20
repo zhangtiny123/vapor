@@ -52,3 +52,16 @@ private extension String {
         return split(separator: "/").last.map(String.init) ?? self
     }
 }
+
+extension NSError: Debuggable {
+    /// `Debuggable` conformance.
+    public var identifier: String {
+        return self.domain + "." + self.code.description
+    }
+    
+    /// `Debuggable` conformance.
+    public var reason: String {
+        return self.localizedFailureReason
+            ?? self.localizedDescription
+    }
+}
