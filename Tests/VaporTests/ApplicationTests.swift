@@ -770,8 +770,7 @@ class ApplicationTests: XCTestCase {
         try app.clientTest(.GET, "client") { res in
             XCTAssertEqual(res.http.status, .ok)
         }
-    }
-        
+    }  
 
     static let allTests = [
         ("testContent", testContent),

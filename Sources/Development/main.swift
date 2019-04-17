@@ -174,6 +174,20 @@ do {
         return res
     }
 
+    struct Payload: Content {
+        var image: File
+        var id: Int
+    }
+
+    router.post("multipart-file") { req -> Future<Response> in
+        return try req.content.decode(Payload.self).map { payload in
+            let res = req.response()
+            res.http.contentType = .png
+            res.http.body = .init(data: payload.image.data)
+            return res
+        }
+    }
+
     services.register(Router.self) { _ in return router }
 
     let app = try Application(environment: .detect(), services: services)
