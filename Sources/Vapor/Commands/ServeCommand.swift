@@ -15,7 +15,7 @@ public final class ServeCommand: Command {
     public let signature = Signature()
 
     /// See `Command`.
-    public var help: String? {
+    public var help: String {
         return "Begins serving the app over HTTP."
     }
 
@@ -38,7 +38,7 @@ public final class ServeCommand: Command {
                 // 0.0.0.0:8080, :8080, parse port
                 ?? context.option(\.bind)?.split(separator: ":").last.flatMap(String.init).flatMap(Int.init)
         )
-        
+
         // setup signal sources for shutdown
         let signalQueue = DispatchQueue(label: "codes.vapor.server.shutdown")
         func makeSignalSource(_ code: Int32) {
@@ -53,10 +53,10 @@ public final class ServeCommand: Command {
         }
         makeSignalSource(SIGTERM)
         makeSignalSource(SIGINT)
-        
+
         try self.server.onShutdown.wait()
     }
-    
+
     deinit {
         self.signalSources.forEach { $0.cancel() } // clear refs
         self.signalSources = []
